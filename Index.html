@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #player-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            padding: 20px;
+        }
+        #song-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        #song-list li {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #eeeeee;
+        }
+        #song-list li:hover {
+            background-color: #eeeeee;
+        }
+        #controls {
+            margin-top: 20px;
+        }
+        #controls button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #controls button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div id="player-container">
+        <h2>Music Player</h2>
+        <ul id="song-list"></ul>
+        <div id="controls">
+            <button id="prev">Prev</button>
+            <button id="play">Play</button>
+            <button id="pause">Pause</button>
+            <button id="next">Next</button>
+        </div>
+    </div>
+
+    <script>
+        const songs = [
+            'Kalimba.mp3',
+            'Maid with the Flaxen Hair.mp3',
+            'Parth Bha mp3.mp3',
+            'Sleep Away.mp3'
+        ];
+
+        const songList = document.getElementById('song-list');
+        const playButton = document.getElementById('play');
+        const pauseButton = document.getElementById('pause');
+        const nextButton = document.getElementById('next');
+        const prevButton = document.getElementById('prev');
+
+        let currentSongIndex = 0;
+        let audio = new Audio();
+
+        function loadSongs() {
+            songs.forEach((song, index) => {
+                const li = document.createElement('li');
+                li.textContent = song;
+                li.addEventListener('click', () => {
+                    currentSongIndex = index;
+                    playSong();
+                });
+                songList.appendChild(li);
+            });
+        }
+
+        function playSong() {
+            if (audio.src) {
+                audio.pause();
+            }
+            audio = new Audio(songs[currentSongIndex]);
+            audio.play();
+        }
+
+        playButton.addEventListener('click', playSong);
+
+        pauseButton.addEventListener('click', () => {
+            audio.pause();
+        });
+
+        nextButton.addEventListener('click', () => {
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+            playSong();
+        });
+
+        prevButton.addEventListener('click', () => {
+            currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+            playSong();
+        });
+
+        loadSongs();
+    </script>
+</body>
+</html>
+
